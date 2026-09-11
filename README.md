@@ -1,110 +1,69 @@
 # cdn.nlfts.dev
 
+CDN gambar statis berbasis GitHub Pages. Semua file di dalam `public/` dipublikasikan langsung sebagai URL.
 
+## URL asset
 
-## Getting started
+Format URL:
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
-
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
-
-## Add your files
-
-* [Create](https://docs.gitlab.com/user/project/repository/web_editor/#create-a-file) or [upload](https://docs.gitlab.com/user/project/repository/web_editor/#upload-a-file) files
-* [Add files using the command line](https://docs.gitlab.com/topics/git/add_files/#add-files-to-a-git-repository) or push an existing Git repository with the following command:
-
-```
-cd existing_repo
-git remote add origin https://gitlab.com/davingm/cdn.nlfts.dev.git
-git branch -M main
-git push -uf origin main
+```text
+https://cdn.nlfts.dev/<user>/<nama-file>
 ```
 
-## Integrate with your tools
+Contoh:
 
-* [Set up project integrations](https://gitlab.com/davingm/cdn.nlfts.dev/-/settings/integrations)
+```text
+https://cdn.nlfts.dev/user/yudha.png
+https://cdn.nlfts.dev/user/tokita.png
+```
 
-## Collaborate with your team
+File contoh tersebut berada di `public/user/yudha.png` dan `public/user/tokita.png`.
 
-* [Invite team members and collaborators](https://docs.gitlab.com/user/project/members/)
-* [Create a new merge request](https://docs.gitlab.com/user/project/merge_requests/creating_merge_requests/)
-* [Automatically close issues from merge requests](https://docs.gitlab.com/user/project/issues/managing_issues/#closing-issues-automatically)
-* [Enable merge request approvals](https://docs.gitlab.com/user/project/merge_requests/approvals/)
-* [Set auto-merge](https://docs.gitlab.com/user/project/merge_requests/auto_merge/)
+## Menambah gambar user
 
-## Test and Deploy
-
-Use the built-in continuous integration in GitLab.
-
-* [Get started with GitLab CI/CD](https://docs.gitlab.com/ci/quick_start/)
-* [Analyze your code for known vulnerabilities with Static Application Security Testing (SAST)](https://docs.gitlab.com/user/application_security/sast/)
-* [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/topics/autodevops/requirements/)
-* [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/user/clusters/agent/)
-* [Set up protected environments](https://docs.gitlab.com/ci/environments/protected_environments/)
-
-***
-
-# Editing this README
-
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thanks to [makeareadme.com](https://www.makeareadme.com/) for this template.
-
-## Suggestions for a good README
-
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
-
-## Name
-Choose a self-explaining name for your project.
-# cdn.nlfts.dev
-
-Repository asset statis untuk gambar, ikon, dan font yang didistribusikan melalui GitLab Pages.
-
-## Struktur
+Simpan gambar user langsung di folder `public/user/`:
 
 ```text
 public/
-├── images/
-│   ├── brand/       # Logo dan identitas visual
-│   ├── content/     # Gambar artikel atau halaman
-│   └── ui/          # Gambar untuk komponen antarmuka
-├── icons/           # Favicon dan ikon
-└── fonts/           # Font web, bila diperlukan
+└── user/
+    ├── yudha.png
+    ├── tokita.png
+    └── images.png
 ```
 
-Hanya isi `public/` yang dipublikasikan. Folder di luar `public/` dipakai untuk konfigurasi dan dokumentasi.
-
-## Cara memakai
-
-1. Tambahkan file ke kategori yang sesuai di dalam `public/`.
-2. Gunakan nama file huruf kecil dengan tanda hubung, misalnya `hero-home.webp`.
-3. Buat merge request ke branch `main`.
-4. Setelah pipeline berhasil, file tersedia di:
+Dengan struktur itu, file `public/user/images.png` tersedia di:
 
 ```text
-https://cdn.nlfts.dev/images/content/hero-home.webp
+https://cdn.nlfts.dev/user/images.png
 ```
 
-Untuk sementara, URL GitLab Pages bawaan juga bisa digunakan dari menu **Deploy > Pages** pada project GitLab.
+Gunakan nama file huruf kecil, tanpa spasi, dan lebih baik memakai tanda hubung. Hindari menimpa nama file yang sudah dipakai karena browser dan CDN dapat menyimpan cache lama.
 
-## Format yang disarankan
+## Deploy ke GitHub Pages
 
-- Gunakan `webp` atau `avif` untuk foto dan gambar besar.
-- Gunakan `svg` untuk logo atau ikon yang perlu tetap tajam.
-- Sediakan `png` atau `jpg` hanya jika kompatibilitas lama diperlukan.
-- Hindari spasi, huruf kapital, dan nama file generik seperti `image1.png`.
-- Jangan menyimpan secret, data pribadi, atau file yang bukan untuk publik.
+Workflow [`.github/workflows/pages.yml`](.github/workflows/pages.yml) akan deploy otomatis setiap push ke branch `main`.
 
-## Deploy GitLab Pages
+Pengaturan satu kali di GitHub:
 
-Pipeline di [`.gitlab-ci.yml`](.gitlab-ci.yml) menerbitkan `public/` secara otomatis setiap ada perubahan di `main`. Atur domain `cdn.nlfts.dev` pada **Deploy > Pages > New Domain**, lalu tambahkan DNS sesuai instruksi GitLab.
+1. Buka **Settings > Pages**.
+2. Pada **Build and deployment > Source**, pilih **GitHub Actions**.
+3. Pastikan DNS domain `cdn.nlfts.dev` mengarah ke GitHub Pages.
+4. Custom domain akan dibaca dari [`public/CNAME`](public/CNAME).
 
-Perubahan pada asset yang sudah dipakai sebaiknya menggunakan nama file baru atau folder versi, contohnya `images/content/v2/hero-home.webp`, agar cache browser dan CDN tidak menyajikan file lama.
+Setelah workflow selesai, file dapat diakses melalui `https://cdn.nlfts.dev/`.
 
 ## Pengembangan lokal
 
-Tidak ada dependency aplikasi. Untuk melihat asset secara lokal, jalankan server statis dari root repository:
+Jalankan server statis dari root repository:
 
 ```bash
 python -m http.server 8080 --directory public
 ```
 
-Kemudian buka `http://localhost:8080`.
+Lalu buka `http://localhost:8080/user/yudha.png`.
+
+## Format gambar
+
+- Gunakan `webp` atau `avif` untuk gambar dengan ukuran lebih kecil.
+- Gunakan `png` untuk transparansi atau kebutuhan kompatibilitas.
+- Jangan menyimpan secret, data pribadi, atau file yang bukan untuk publik.
