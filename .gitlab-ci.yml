@@ -1,0 +1,14 @@
+pages:
+  stage: deploy
+  script:
+    - echo "Publishing static CDN assets"
+  pages:
+    publish: public
+  artifacts:
+    paths:
+      - public
+  rules:
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+  variables:
+    FF_USE_FASTZIP: "true"
+  cache: {}
